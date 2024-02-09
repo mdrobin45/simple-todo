@@ -3,7 +3,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import { MdCheckBoxOutlineBlank, MdDelete } from "react-icons/md";
 
 const Home = () => {
-   const [todo, setTodo] = useState({});
+   const [inputValue, setInputValue] = useState("");
    const [storedList, setStoredList] = useState([]);
 
    // Retrieve initial todo array from local storage
@@ -17,19 +17,23 @@ const Home = () => {
    // Handle todo input change
    const handleTodoInputChange = (e) => {
       const value = e.target.value;
-      setTodo({ text: value, checked: "incomplete" });
+      setInputValue(value);
    };
 
    // Handle add new todo
    const handleAddTodo = (e) => {
       e.preventDefault();
-      setStoredList((prev) => [...prev, todo]);
+      setStoredList((prev) => [
+         ...prev,
+         { text: inputValue, checked: "incomplete" },
+      ]);
    };
 
    // Save todo to local storage
    useEffect(() => {
       if (storedList.length) {
          localStorage.setItem("todo", JSON.stringify(storedList));
+         setInputValue("");
       }
    }, [storedList]);
 
@@ -38,6 +42,7 @@ const Home = () => {
          <div className="mt-20 border rounded-md shadow-sm p-6 w-2/4">
             <form onSubmit={handleAddTodo} className="flex items-center gap-2">
                <input
+                  value={inputValue}
                   onChange={handleTodoInputChange}
                   type="text"
                   className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:ring-2 focus:outline-none focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
