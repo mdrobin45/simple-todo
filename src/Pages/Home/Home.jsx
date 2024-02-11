@@ -3,6 +3,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import { MdCheckBox, MdCheckBoxOutlineBlank, MdDelete } from "react-icons/md";
 import insertToLocalStorage from "../../Utils/insertToLocalStorage";
 import retrieveLocalStorageData from "../../Utils/retrieveLocalStorageData";
+import emptyImage from "../../assets/images/emptyList.svg";
 
 const Home = () => {
    const [inputValue, setInputValue] = useState("");
@@ -78,44 +79,52 @@ const Home = () => {
                   ADD
                </button>
             </form>
-            {storedList.map((item, index) => (
-               <div
-                  key={index}
-                  className="flex items-center justify-between py-4 border-b border-primary">
-                  <div className="flex items-center gap-2">
-                     <p>
-                        {item.checked === "incomplete" ? (
-                           <MdCheckBoxOutlineBlank
-                              onClick={() => {
-                                 handleTaskComplete(index);
-                              }}
-                              className="text-gray-500 text-2xl cursor-pointer"
-                           />
-                        ) : (
-                           <MdCheckBox className="text-primary text-2xl cursor-pointer" />
-                        )}
-                     </p>
-                     {item.checked === "incomplete" ? (
-                        <p>{item.text}</p>
-                     ) : (
-                        <del>{item.text}</del>
-                     )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                     <p>
-                        <FaPencilAlt className="text-gray-500 hover:text-gray-900 cursor-pointer" />
-                     </p>
-                     <p>
-                        <MdDelete
-                           onClick={() => {
-                              handleDelete(index);
-                           }}
-                           className="text-xl text-gray-500 hover:text-red-500 cursor-pointer"
-                        />
-                     </p>
-                  </div>
+            {storedList.length !== 0 ? (
+               <>
+                  {storedList.map((item, index) => (
+                     <div
+                        key={index}
+                        className="flex items-center justify-between py-4 border-b border-primary">
+                        <div className="flex items-center gap-2">
+                           <p>
+                              {item.checked === "incomplete" ? (
+                                 <MdCheckBoxOutlineBlank
+                                    onClick={() => {
+                                       handleTaskComplete(index);
+                                    }}
+                                    className="text-gray-500 text-2xl cursor-pointer"
+                                 />
+                              ) : (
+                                 <MdCheckBox className="text-primary text-2xl cursor-pointer" />
+                              )}
+                           </p>
+                           {item.checked === "incomplete" ? (
+                              <p>{item.text}</p>
+                           ) : (
+                              <del>{item.text}</del>
+                           )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                           <p>
+                              <FaPencilAlt className="text-gray-500 hover:text-gray-900 cursor-pointer" />
+                           </p>
+                           <p>
+                              <MdDelete
+                                 onClick={() => {
+                                    handleDelete(index);
+                                 }}
+                                 className="text-xl text-gray-500 hover:text-red-500 cursor-pointer"
+                              />
+                           </p>
+                        </div>
+                     </div>
+                  ))}
+               </>
+            ) : (
+               <div className="mt-20">
+                  <img src={emptyImage} alt="Empty" />
                </div>
-            ))}
+            )}
          </div>
       </main>
    );
