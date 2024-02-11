@@ -1,71 +1,29 @@
-import { useEffect, useState } from "react";
-import { FaPencilAlt } from "react-icons/fa";
+import EdiText from "react-editext";
 import { MdCheckBox, MdCheckBoxOutlineBlank, MdDelete } from "react-icons/md";
-import insertToLocalStorage from "../../Utils/insertToLocalStorage";
-import retrieveLocalStorageData from "../../Utils/retrieveLocalStorageData";
 import emptyImage from "../../assets/images/emptyList.svg";
+import useTodoLogic from "./useTodoLogic";
 
 const Home = () => {
-   const [inputValue, setInputValue] = useState("");
-   const [storedList, setStoredList] = useState([]);
-
-   // Retrieve initial todo array from local storage
-   useEffect(() => {
-      const storedData = retrieveLocalStorageData("todo");
-      if (storedData) {
-         setStoredList(storedData);
-      }
-   }, []);
-
-   // Handle todo input change
-   const handleTodoInputChange = (e) => {
-      const value = e.target.value;
-      setInputValue(value);
-   };
-
-   // Handle add new todo
-   const handleAddTodo = (e) => {
-      e.preventDefault();
-      setStoredList((prev) => [
-         ...prev,
-         { text: inputValue, checked: "incomplete" },
-      ]);
-   };
-
-   // Save todo to local storage
-   useEffect(() => {
-      if (storedList.length) {
-         insertToLocalStorage("todo", storedList);
-         setInputValue("");
-      }
-   }, [storedList]);
-
-   // Handle complete task
-   const handleTaskComplete = (index) => {
-      storedList[index].checked = "complete";
-      insertToLocalStorage("todo", storedList);
-      const storedData = retrieveLocalStorageData("todo");
-
-      if (storedData) {
-         setStoredList(storedData);
-      }
-   };
-
-   // Handle Delete todo
-   const handleDelete = (index) => {
-      storedList.splice(index, 1);
-      insertToLocalStorage("todo", storedList);
-
-      const storedData = retrieveLocalStorageData("todo");
-      if (storedData) {
-         setStoredList(storedData);
-      }
-   };
+   const {
+      handleTodoInputChange,
+      inputValue,
+      storedList,
+      handleAddTodo,
+      handleDelete,
+      handleEditTodo,
+      handleTaskComplete,
+      completeTodoCount,
+   } = useTodoLogic();
 
    return (
       <main className="flex items-center flex-col">
          <div className="mt-20 border rounded-md shadow-sm p-6 w-2/4">
-            <form onSubmit={handleAddTodo} className="flex items-center gap-2">
+            <p>
+               Completed: {completeTodoCount} out of {storedList.length}
+            </p>
+            <form
+               onSubmit={handleAddTodo}
+               className="flex items-center gap-2 mt-2">
                <input
                   value={inputValue}
                   onChange={handleTodoInputChange}
@@ -99,15 +57,18 @@ const Home = () => {
                               )}
                            </p>
                            {item.checked === "incomplete" ? (
-                              <p>{item.text}</p>
+                              <EdiText
+                                 type="text"
+                                 onSave={handleEditTodo}
+                                 value={item.text}
+                                 // editing={isEditing}
+                                 hint
+                              />
                            ) : (
                               <del>{item.text}</del>
                            )}
                         </div>
                         <div className="flex items-center gap-2">
-                           <p>
-                              <FaPencilAlt className="text-gray-500 hover:text-gray-900 cursor-pointer" />
-                           </p>
                            <p>
                               <MdDelete
                                  onClick={() => {
