@@ -30,6 +30,11 @@ Open project folder in terminal and run following command
 ```bash
 npm run dev
 ```
+
+
+### Live Site:
+https://btech-simpletodo.surge.sh
+
 ## Used Technology
 
 **Technologies:** React, React Router Dom v6, TailwindCSS

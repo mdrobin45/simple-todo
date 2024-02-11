@@ -69,12 +69,14 @@ const useTodoLogic = () => {
    useEffect(() => {
       const todos = retrieveLocalStorageData("todo");
 
-      // Completed todos
-      const countCompletedTodo = todos.filter(
-         (item) => item.checked === "complete"
-      ).length;
+      if (todos) {
+         // Completed todos
+         const countCompletedTodo = todos.filter(
+            (item) => item.checked === "complete"
+         ).length;
 
-      setCountTodoCount(countCompletedTodo);
+         setCountTodoCount(countCompletedTodo);
+      }
    }, [storedList]);
 
    return {
