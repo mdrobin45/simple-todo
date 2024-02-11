@@ -40,10 +40,19 @@ const Home = () => {
    }, [storedList]);
 
    // Handle complete task
-   const handleTaskComplete = (id) => {
-      const findTaskIndex = storedList.findIndex((obj, index) => index === id);
+   const handleTaskComplete = (index) => {
+      storedList[index].checked = "complete";
+      insertToLocalStorage("todo", storedList);
+      const storedData = retrieveLocalStorageData("todo");
 
-      storedList[findTaskIndex].checked = "complete";
+      if (storedData) {
+         setStoredList(storedData);
+      }
+   };
+
+   // Handle Delete todo
+   const handleDelete = (index) => {
+      storedList.splice(index, 1);
       insertToLocalStorage("todo", storedList);
 
       const storedData = retrieveLocalStorageData("todo");
@@ -97,7 +106,12 @@ const Home = () => {
                         <FaPencilAlt className="text-gray-500 hover:text-gray-900 cursor-pointer" />
                      </p>
                      <p>
-                        <MdDelete className="text-xl text-gray-500 hover:text-red-500 cursor-pointer" />
+                        <MdDelete
+                           onClick={() => {
+                              handleDelete(index);
+                           }}
+                           className="text-xl text-gray-500 hover:text-red-500 cursor-pointer"
+                        />
                      </p>
                   </div>
                </div>
