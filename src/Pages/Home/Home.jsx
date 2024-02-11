@@ -61,7 +61,6 @@ const Home = () => {
                                  type="text"
                                  onSave={handleEditTodo}
                                  value={item.text}
-                                 // editing={isEditing}
                                  hint
                               />
                            ) : (

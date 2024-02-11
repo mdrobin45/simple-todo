@@ -1,8 +1,35 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Todo List Project
 
-Currently, two official plugins are available:
+This is the todo list project where used local storage for store todo. User can add, delete, mark as complete todos as their needs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Run Locally
+
+Clone the project
+
+```bash
+git clone https://github.com/mdrobin45/simple-todo.git
+```
+
+Go to the project directory
+
+```bash
+cd simple-todo
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+#### Start Server
+
+Open project folder in terminal and run following command
+
+```bash
+npm run dev
+```
+## Used Technology
+
+**Technologies:** React, React Router Dom v6, TailwindCSS
