@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
-import { MdCheckBoxOutlineBlank, MdDelete } from "react-icons/md";
+import { MdCheckBox, MdCheckBoxOutlineBlank, MdDelete } from "react-icons/md";
+import insertToLocalStorage from "../../Utils/insertToLocalStorage";
+import retrieveLocalStorageData from "../../Utils/retrieveLocalStorageData";
 
 const Home = () => {
    const [inputValue, setInputValue] = useState("");
@@ -8,9 +10,9 @@ const Home = () => {
 
    // Retrieve initial todo array from local storage
    useEffect(() => {
-      const storedData = localStorage.getItem("todo");
+      const storedData = retrieveLocalStorageData("todo");
       if (storedData) {
-         setStoredList(JSON.parse(storedData));
+         setStoredList(storedData);
       }
    }, []);
 
@@ -32,10 +34,22 @@ const Home = () => {
    // Save todo to local storage
    useEffect(() => {
       if (storedList.length) {
-         localStorage.setItem("todo", JSON.stringify(storedList));
+         insertToLocalStorage("todo", storedList);
          setInputValue("");
       }
    }, [storedList]);
+
+   // Handle complete task
+   const handleTaskComplete = (id) => {
+      const findTaskIndex = storedList.findIndex((obj, index) => index === id);
+      storedList[findTaskIndex].checked = "complete";
+      insertToLocalStorage("todo", storedList);
+
+      const storedData = retrieveLocalStorageData("todo");
+      if (storedData) {
+         setStoredList(storedData);
+      }
+   };
 
    return (
       <main className="flex items-center flex-col">
@@ -46,7 +60,7 @@ const Home = () => {
                   onChange={handleTodoInputChange}
                   type="text"
                   className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:ring-2 focus:outline-none focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
-                  placeholder="Todo"
+                  placeholder="Write Todo"
                />
                <button
                   type="submit"
@@ -60,7 +74,16 @@ const Home = () => {
                   className="flex items-center justify-between py-4 border-b border-primary">
                   <div className="flex items-center gap-2">
                      <p>
-                        <MdCheckBoxOutlineBlank className="text-gray-500 text-2xl cursor-pointer" />
+                        {item.checked === "incomplete" ? (
+                           <MdCheckBoxOutlineBlank
+                              onClick={() => {
+                                 handleTaskComplete(index);
+                              }}
+                              className="text-gray-500 text-2xl cursor-pointer"
+                           />
+                        ) : (
+                           <MdCheckBox className="text-primary text-2xl cursor-pointer" />
+                        )}
                      </p>
                      <p>{item.text}</p>
                   </div>
