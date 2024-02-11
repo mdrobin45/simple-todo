@@ -42,6 +42,7 @@ const Home = () => {
    // Handle complete task
    const handleTaskComplete = (id) => {
       const findTaskIndex = storedList.findIndex((obj, index) => index === id);
+
       storedList[findTaskIndex].checked = "complete";
       insertToLocalStorage("todo", storedList);
 
@@ -85,7 +86,11 @@ const Home = () => {
                            <MdCheckBox className="text-primary text-2xl cursor-pointer" />
                         )}
                      </p>
-                     <p>{item.text}</p>
+                     {item.checked === "incomplete" ? (
+                        <p>{item.text}</p>
+                     ) : (
+                        <del>{item.text}</del>
+                     )}
                   </div>
                   <div className="flex items-center gap-2">
                      <p>
